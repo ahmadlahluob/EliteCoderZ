@@ -67,20 +67,33 @@ async def check(ctx):
         solved_daily = kata.lower() in [p.lower() for p in recent_problems]
         solved_any = len(recent_problems) > 0
 
-        if data.get('last_solved') != today_str:
-            points = 0
-            if solved_daily:
-                data['streak'] += 1
-                points = 30
-                data['last_solved'] = today_str
-                results.append(f"<@{uid}> +30 points for Daily Kata! 🔥 Streak: {data['streak']} Total: {data['points'] + points}")
-            elif solved_any:
-                points = 5
-                data['last_solved'] = today_str
-                results.append(f"<@{uid}> +5 points for solving any problem! Total: {data['points'] + points}")
-            data['points'] += points
+        # ✅ Initialize old accounts with new keys
+        if 'last_solved_daily' not in data:
+            data['last_solved_daily'] = ""
+        if 'last_solved_any' not in data:
+            data['last_solved_any'] = ""
+
+        points = 0
+        message = None
+
+        if solved_daily and data['last_solved_daily'] != today_str:
+            data['streak'] += 1
+            points = 30
+            data['last_solved_daily'] = today_str
+            message = f"<@{uid}> +30 points for Daily Kata! 🔥 Streak: {data['streak']} Total: {data['points'] + points}"
+
+        elif solved_any and data['last_solved_any'] != today_str:
+            points = 5
+            data['last_solved_any'] = today_str
+            message = f"<@{uid}> +5 points for solving any problem! Total: {data['points'] + points}"
+
+        data['points'] += points
+        if message:
+            results.append(message)
+
     save_json('users.json', users)
     await ctx.send("\n".join(results) if results else "No one solved anything today!")
+
 
 @bot.command()
 async def leaderboard(ctx):
