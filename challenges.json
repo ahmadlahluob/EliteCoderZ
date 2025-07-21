@@ -1,0 +1,16 @@
+{
+    "daily_kata": [
+        {
+            "title": "Valid Parentheses",
+            "url": "https://leetcode.com/problems/valid-parentheses/"
+        },
+        {
+            "title": "Best Time to Buy and Sell Stock",
+            "url": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/"
+        }
+    ],
+    "current_kata": {
+        "title": "Two Sum",
+        "url": "https://leetcode.com/problems/two-sum/"
+    }
+}
